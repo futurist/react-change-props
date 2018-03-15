@@ -3,7 +3,7 @@ import React from 'react';
 import test from 'ava'
 import TestRenderer from 'react-test-renderer'
 
-import lib from '../'
+import lib from '../src'
 
 // NOTICE: React not support Nested Component of props.children
 // Below <Foo/> will have props.children === undefined
@@ -13,20 +13,41 @@ class Foo extends React.Component {
     return (<Bar className="abc"/>)
   }
 }
+const JSX = <div>
+  {false}
+  oiajweofj
+  <p className="abc"><span>osdifj</span></p></div>
+
 class Bar extends React.Component {
   render(){
-    return lib(<div>
-      {false}
-      oiajweofj
-      <p className="abc"><span>osdifj</span></p></div>
-      , el=>(el.type=='p' && {className:'asdf'})
-    )
+    const {props} = this
+    return props.change
+      ? lib(JSX, props.change)
+      : JSX
   }
 }
 
-test('changed className', t => {
-  const wrapper = TestRenderer.create( lib(<Bar />) )
+test('callback can be ignored', t => {
+  TestRenderer.create( lib(<div><p></p></div>) )
+  t.pass()
+})
+
+
+test('props replace', t => {
+  const wrapper = TestRenderer.create( <Bar change={
+    el=>(el.type=='p' && {className:'asdf'})
+  } /> )
 	t.is(wrapper.root.findAll(v=>{
     return v.props.className=='asdf'
   }).length, 1)
+})
+
+test('children replace', t => {
+  const wrapper = TestRenderer.create( <Bar change={
+    el=>(el.type=='p' && {children: <h1 />})
+  } /> )
+  // console.log( JSON.stringify(wrapper.toJSON() ))
+	t.is(wrapper.root.findAll(v=>{
+    return /^(p|h1)$/.test(v.type)
+  }).length, 2)
 })
