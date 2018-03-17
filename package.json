@@ -1,6 +1,6 @@
 {
   "name": "react-change-props",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Mutate(Change) React props, for each element in tree, and replace children.",
   "main": "dist/index.js",
   "module": "src/index.js",
