@@ -14,26 +14,6 @@ var isArray = Array.isArray;
 var isFrozen = Object.isFrozen,
     assign = Object.assign;
 
-/** Try to Wrap Component Class, failed? */
-// const isFunction = fn=>typeof fn==='function'
-// const isClassType = (Component) => {
-//   return 'prototype' in Component && isFunction(Component.prototype.render)
-// }
-
-// const wrapComponent = (Component) => {
-//   const CSSObjComponent = isClassType(Component)
-//   ? class extends Component {
-//     render () {
-//       const result = super.render()
-//       return injectCSS(result)
-//     }
-//   }
-//   : function (props) {
-//     const result = Component.apply(this, arguments)
-//     return injectCSS(result)
-//   }
-//   return assign(CSSObjComponent, Component)
-// }
 
 var assignProps = function assignProps(element, cb) {
   var children;

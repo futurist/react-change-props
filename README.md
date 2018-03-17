@@ -1,5 +1,5 @@
-# react-clone-tree
-Clone React Element Tree, allow you change props for each tree element, and replace children.
+# react-change-props
+Mutate(Change) React props, for each element in tree, and replace children.
 
 [![npm](https://img.shields.io/npm/v/react-clone-tree.svg "Version")](https://www.npmjs.com/package/react-clone-tree)
 [![Build Status](https://travis-ci.org/futurist/react-clone-tree.svg?branch=master)](https://travis-ci.org/futurist/react-clone-tree)
