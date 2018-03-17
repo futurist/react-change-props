@@ -1,9 +1,9 @@
-import React from 'react';
 
-import test from 'ava'
-import TestRenderer from 'react-test-renderer'
+var test = require('ava')
+var TestRenderer = require('react-test-renderer')
 
-import lib from '../src'
+var React = require('react')
+var lib = require('../dist').default
 
 // NOTICE: React not support Nested Component of props.children
 // Below <Foo/> will have props.children === undefined
@@ -50,4 +50,28 @@ test('children replace', t => {
 	t.is(wrapper.root.findAll(v=>{
     return /^(p|h1)$/.test(v.type)
   }).length, 2)
+})
+
+test('prduction props replace', t => {
+  // try to change to production build of React
+  process.env.NODE_ENV = 'production'
+  Object.keys(require.cache)
+    .filter(v=>/react\//.test(v))
+    .forEach(v=>delete require.cache[v])
+  delete require.cache[require.resolve('../dist')]
+
+  React = require('react')
+  lib = require('../dist').default
+
+  const wrapper = TestRenderer.create( <Bar change={
+    el=>(el.type=='p' && {className:'asdf', children: <h1 />})
+  } /> )
+  // console.log( JSON.stringify(wrapper.toJSON() ))
+	t.is(wrapper.root.findAll(v=>{
+    return /^(p|h1)$/.test(v.type)
+  }).length, 2)
+  t.is(wrapper.root.findAll(v=>{
+    return v.props.className=='asdf'
+  }).length, 1)
+
 })
